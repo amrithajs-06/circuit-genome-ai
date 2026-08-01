@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+backend/data/users.json
+backend/data/projects.json
+*.log
+.DS_Store
