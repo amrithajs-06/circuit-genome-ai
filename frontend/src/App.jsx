@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
@@ -13,6 +13,13 @@ export default function App() {
     return saved ? JSON.parse(saved) : null;
   });
 
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("theme") === "dark");
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
+
   const handleLogin = ({ token, user }) => {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
@@ -26,8 +33,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen">
-      <Navbar user={user} onLogout={handleLogout} />
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors">
+      <Navbar user={user} onLogout={handleLogout} darkMode={darkMode} onToggleDark={() => setDarkMode((d) => !d)} />
       <Routes>
         <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />

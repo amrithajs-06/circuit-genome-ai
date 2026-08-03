@@ -18,6 +18,7 @@ export const projectApi = {
   list: () => api.get("/projects").then((r) => r.data),
   get: (id) => api.get(`/projects/${id}`).then((r) => r.data),
   create: (data) => api.post("/projects", data).then((r) => r.data),
+  reanalyze: (id, data) => api.put(`/projects/${id}/reanalyze`, data).then((r) => r.data),
   remove: (id) => api.delete(`/projects/${id}`),
   library: () => api.get("/projects/library").then((r) => r.data),
   pdfUrl: (id) => `/api/projects/${id}/pdf`,

@@ -47,7 +47,17 @@ Runs on **http://localhost:5173** and proxies `/api` calls to the backend automa
 Open http://localhost:5173, register an account, then click **Upload Circuit** →
 **Fill example** to try it instantly.
 
-## 2. How the scoring works
+## 2. Add-on features
+
+Beyond the base MVP, this version adds:
+
+- **Explainable scoring ("Why this score?")** — click any genome dimension on the report page to see the exact rule-by-rule trace (`analysis.trace`) that produced it, with each rule's point delta and reason.
+- **Component substitution suggestions** — recommendations that involve swapping a part (e.g. LM7805 → Buck Converter) now include the actual suggested component(s) from the library, with estimated cost.
+- **Re-analyze & version history** — click "Edit & Re-analyze" on a report to change voltage/current/components and get a fresh analysis. The previous version is archived automatically (`project.history`, last 20 kept), and a before/after score diff is shown immediately after re-analysis.
+- **Hybrid ML comparison layer** (`backend/utils/mlEngine.js`) — a small, dependency-free ridge-regression model trained on synthetic data at server startup, run alongside the rule engine so every project shows both a rule-based score and an ML-predicted score for comparison. This is intentionally transparent (closed-form linear regression, not a black box) and is meant as a stepping stone toward the "future ML scoring" direction, not a replacement for the rule engine.
+- **Dark mode** — toggle in the navbar, persisted to `localStorage`.
+
+## 3. How the scoring works
 
 `backend/utils/genomeEngine.js` is the rule engine described in the spec (Module 4/5/6). It:
 
@@ -58,9 +68,10 @@ Open http://localhost:5173, register an account, then click **Upload Circuit** �
 
 Extend it by editing that file's rules, or by adding more entries to `componentLibrary.json`.
 
-## 3. Push this to GitHub
+## 4. Push this to GitHub
 
-From the `circuit-genome-ai` folder:
+**First time (no repo yet):** create an empty repo on github.com (no README/gitignore, since you
+already have one here), then from the `circuit-genome-ai` folder:
 
 ```bash
 git init
@@ -71,16 +82,21 @@ git remote add origin https://github.com/<your-username>/<your-repo-name>.git
 git push -u origin main
 ```
 
-If you don't have a repo yet: go to github.com → **New repository** → give it a name → **do not**
-initialize with a README (you already have one) → create → then run the commands above with that
-repo's URL (shown on the page after creation).
+**Already have the repo and are pushing these add-ons as an update:**
 
-If you use SSH instead of HTTPS:
 ```bash
-git remote add origin git@github.com:<your-username>/<your-repo-name>.git
+git add .
+git commit -m "Add explainability, component substitutions, version history, hybrid ML comparison, dark mode"
+git push
 ```
 
-## 4. Deploying (optional)
+If push is rejected with a 403/permission error, it usually means Windows/git has a *different*
+GitHub account's credentials cached. Clear them via Control Panel → Credential Manager →
+Windows Credentials → remove any `git:https://github.com` entry, then push again and log in as
+the correct account (using a Personal Access Token as the password, not your GitHub password —
+generate one at https://github.com/settings/tokens with the `repo` scope checked).
+
+## 5. Deploying (optional)
 
 - **Frontend**: `npm run build` in `frontend/` produces a static `dist/` folder — deploy to
   Vercel, Netlify, or GitHub Pages.
@@ -88,7 +104,7 @@ git remote add origin git@github.com:<your-username>/<your-repo-name>.git
   environment variable there. Note the JSON-file storage resets if the host's filesystem is
   ephemeral (e.g. some free tiers) — for production, migrate to MongoDB (see below).
 
-## 5. Swapping in real MongoDB (future enhancement, per spec §11)
+## 6. Swapping in real MongoDB (future enhancement, per spec §11)
 
 Replace `backend/db.js` with a Mongoose connection and models for `User` and `Project` matching
 the schemas in the spec (§10). The route files (`routes/auth.js`, `routes/projects.js`) call

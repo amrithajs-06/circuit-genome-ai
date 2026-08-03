@@ -24,29 +24,29 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-16 bg-white p-8 rounded-xl shadow-sm border border-slate-200">
-      <h1 className="text-2xl font-bold text-slate-800 mb-1">Welcome back</h1>
-      <p className="text-slate-500 text-sm mb-6">Log in to Circuit Genome AI</p>
+    <div className="max-w-md mx-auto mt-16 bg-white dark:bg-slate-900 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+      <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">Welcome back</h1>
+      <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">Log in to Circuit Genome AI</p>
 
-      {error && <div className="bg-rose-50 text-rose-600 text-sm p-3 rounded-md mb-4">{error}</div>}
+      {error && <div className="bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 text-sm p-3 rounded-md mb-4">{error}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="text-sm font-medium text-slate-700">Email</label>
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
           <input
             type="email"
             required
-            className="mt-1 w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-genome-500"
+            className="mt-1 w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-genome-500"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
         </div>
         <div>
-          <label className="text-sm font-medium text-slate-700">Password</label>
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
           <input
             type="password"
             required
-            className="mt-1 w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-genome-500"
+            className="mt-1 w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-genome-500"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
@@ -59,7 +59,7 @@ export default function Login({ onLogin }) {
         </button>
       </form>
 
-      <p className="text-sm text-slate-500 mt-4 text-center">
+      <p className="text-sm text-slate-500 dark:text-slate-400 mt-4 text-center">
         No account? <Link to="/register" className="text-genome-600 font-medium">Register</Link>
       </p>
     </div>

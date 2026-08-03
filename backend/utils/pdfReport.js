@@ -39,6 +39,15 @@ function generateProjectPDF(project, res) {
   });
   doc.moveDown();
 
+  if (project.mlComparison) {
+    doc.fontSize(14).fillColor("#0f172a").text("Rule Engine vs. Hybrid ML Prediction");
+    doc.moveDown(0.3);
+    doc.fontSize(10).fillColor("#334155");
+    doc.text(`Rule-Based Overall Score: ${project.analysis.overallScore}%`);
+    doc.text(`ML-Predicted Overall Score: ${project.mlComparison.predicted}% (${project.mlComparison.modelType})`);
+    doc.moveDown();
+  }
+
   doc.fontSize(14).fillColor("#0f172a").text("Risk Analysis");
   doc.moveDown(0.3);
   doc.fontSize(10).fillColor("#334155");
